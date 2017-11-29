@@ -17,6 +17,7 @@ pList ListCreate()
 
 void PushBack(pList lst, int value)
 {
+    assert(lst);
     pListElement NewEl = (pListElement) calloc(1, sizeof(ListElement));
     assert(NewEl);
     NewEl->value = value;
@@ -37,6 +38,7 @@ void PushBack(pList lst, int value)
 
 void PushFront(pList lst, int value)
 {
+    assert(lst);
     pListElement NewEl = (pListElement) calloc(1, sizeof(ListElement));
     assert(NewEl);
     NewEl->value = value;
@@ -57,6 +59,7 @@ void PushFront(pList lst, int value)
 
 pListElement InsertBack(pListElement elem, int value)
 {
+    assert(elem);
     pListElement NewElem = (pListElement) calloc(1, sizeof(ListElement));
     assert(NewElem);
     NewElem->value = value;
@@ -71,6 +74,7 @@ pListElement InsertBack(pListElement elem, int value)
 
 pListElement InsertFront(pListElement elem, int value)
 {
+    assert(elem);
     pListElement NewElem = (pListElement) calloc(1, sizeof(ListElement));
     assert(NewElem);
     NewElem->value = value;
@@ -85,6 +89,7 @@ pListElement InsertFront(pListElement elem, int value)
 
 void PrintList(pList lst)
 {
+    assert(lst);
     pListElement current = lst->first;
     while (current)
     {
@@ -97,6 +102,7 @@ void PrintList(pList lst)
 
 pListElement FindValue(pList lst, int value)
 {
+    assert(lst);
     pListElement current = lst->first;
     while (current)
     {
@@ -110,6 +116,7 @@ pListElement FindValue(pList lst, int value)
 
 pListElement IndexToPointer(pList lst, int index)
 {
+    assert(lst);
     pListElement current = lst->first;
     int i = 0;
     for (i = 0; i < index && current; i++)
@@ -121,6 +128,7 @@ pListElement IndexToPointer(pList lst, int index)
 
 void DeleteElement(pListElement elem)
 {
+    assert(elem);
     elem->prev->next = elem->next;
     elem->next->prev = elem->prev;
     free(elem);
@@ -129,6 +137,7 @@ void DeleteElement(pListElement elem)
 
 void DeleteList(pList lst)
 {
+    assert(lst);
     pListElement current = lst->first;
     while (current)
     {
