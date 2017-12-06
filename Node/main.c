@@ -13,7 +13,7 @@ int main()
     printf("Enter several numbers; to finish, enter -666\n");
     int num  = 0;
     scanf("%d", &num);
-    Node* root = CreateNode(num);
+    Node* root = nodeCreate(num);
     scanf("%d", &num);
 
     while (num != END_NUM)
@@ -22,7 +22,7 @@ int main()
         scanf("%d", &num);
     }
     PrintNodeSort(root);
-    NodeDot(root);
+    nodeDot(root);
 
     return 0;
 }
@@ -30,19 +30,19 @@ int main()
 
 void AddNodeSort(Node* root, value_t val)
 {
-    assert(root);
+    assert(root && "Root is NULL");
 
     if (val >= root->value)
     {
         if (!root->right)
-            AddRightNode(root, val);
+            nodeAddRight(root, val);
         else
             AddNodeSort(root->right, val);
     }
     else // val < root->value;
     {
         if (!root->left)
-            AddLeftNode(root, val);
+            nodeAddLeft(root, val);
         else
             AddNodeSort(root->left, val);
     }
@@ -51,7 +51,7 @@ void AddNodeSort(Node* root, value_t val)
 
 void PrintNodeSort(Node* root)
 {
-    assert(root);
+    assert(root && "Root is NULL");
 
     if (root->left)
         PrintNodeSort(root->left);
