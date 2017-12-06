@@ -5,9 +5,11 @@
 #include "list.h"
 
 
-pList ListCreate()
+List* listCreate()
 {
-    pList lst = (pList) calloc(1, sizeof(List));
+    List* lst = (List*) calloc(1, sizeof(List));
+    assert(lst && "Failed to create new list");
+
     lst->first = NULL;
     lst->last = NULL;
 
@@ -15,11 +17,13 @@ pList ListCreate()
 }
 
 
-void PushBack(pList lst, int value)
+void listPushBack(List* lst, value_t value)
 {
-    assert(lst);
-    pListElement NewEl = (pListElement) calloc(1, sizeof(ListElement));
-    assert(NewEl);
+    assert(lst && "Passed NULL pointer");
+
+    ListElement* NewEl = (ListElement*) calloc(1, sizeof(ListElement));
+    assert(NewEl && "Failed to create new list element");
+
     NewEl->value = value;
     NewEl->next = NULL;
     if (lst->last)
@@ -36,11 +40,13 @@ void PushBack(pList lst, int value)
 }
 
 
-void PushFront(pList lst, int value)
+void listPushFront(List* lst, value_t value)
 {
-    assert(lst);
-    pListElement NewEl = (pListElement) calloc(1, sizeof(ListElement));
-    assert(NewEl);
+    assert(lst && "Passed NULL pointer");
+
+    ListElement* NewEl = (ListElement*) calloc(1, sizeof(ListElement));
+    assert(NewEl && "Failed to create new list element");
+
     NewEl->value = value;
     NewEl->prev = NULL;
     if (lst->first)
@@ -57,11 +63,13 @@ void PushFront(pList lst, int value)
 }
 
 
-pListElement InsertBack(pListElement elem, int value)
+ListElement* listInsertBack(ListElement* elem, value_t value)
 {
-    assert(elem);
-    pListElement NewElem = (pListElement) calloc(1, sizeof(ListElement));
-    assert(NewElem);
+    assert(elem && "Passed NULL pointer");
+
+    ListElement* NewElem = (ListElement*) calloc(1, sizeof(ListElement));
+    assert(NewElem && "Failed to create new list element");
+
     NewElem->value = value;
     NewElem->next = elem->next;
     elem->next = NewElem;
@@ -72,11 +80,13 @@ pListElement InsertBack(pListElement elem, int value)
 }
 
 
-pListElement InsertFront(pListElement elem, int value)
+ListElement* listInsertFront(ListElement* elem, value_t value)
 {
-    assert(elem);
-    pListElement NewElem = (pListElement) calloc(1, sizeof(ListElement));
-    assert(NewElem);
+    assert(elem && "Passed NULL pointer");
+
+    ListElement* NewElem = (ListElement*) calloc(1, sizeof(ListElement));
+    assert(NewElem && "Failed to create new list element");
+
     NewElem->value = value;
     NewElem->prev = elem->prev;
     elem->prev = NewElem;
@@ -87,10 +97,11 @@ pListElement InsertFront(pListElement elem, int value)
 }
 
 
-void PrintList(pList lst)
+void listPrint(List* lst)
 {
-    assert(lst);
-    pListElement current = lst->first;
+    assert(lst && "Passed NULL pointer");
+
+    ListElement* current = lst->first;
     while (current)
     {
         printf("%d ", current->value);
@@ -100,10 +111,11 @@ void PrintList(pList lst)
 }
 
 
-pListElement FindValue(pList lst, int value)
+ListElement* listFindValue(List* lst, value_t value)
 {
-    assert(lst);
-    pListElement current = lst->first;
+    assert(lst && "Passed NULL pointer");
+
+    ListElement* current = lst->first;
     while (current)
     {
         if (current->value == value)
@@ -114,10 +126,11 @@ pListElement FindValue(pList lst, int value)
 }
 
 
-pListElement IndexToPointer(pList lst, int index)
+ListElement* listIndexToPointer(List* lst, int index)
 {
-    assert(lst);
-    pListElement current = lst->first;
+    assert(lst && "Passed NULL pointer");
+
+    ListElement* current = lst->first;
     int i = 0;
     for (i = 0; i < index && current; i++)
         current = current->next;
@@ -126,22 +139,24 @@ pListElement IndexToPointer(pList lst, int index)
 }
 
 
-void DeleteElement(pListElement elem)
+void listDeleteElement(ListElement* elem)
 {
-    assert(elem);
+    assert(elem && "Passed NULL pointer");
+
     elem->prev->next = elem->next;
     elem->next->prev = elem->prev;
     free(elem);
 }
 
 
-void DeleteList(pList lst)
+void listDelete(List* lst)
 {
-    assert(lst);
-    pListElement current = lst->first;
+    assert(lst && "Passed NULL pointer");
+
+    ListElement* current = lst->first;
     while (current)
     {
-        pListElement tmp = current->next;
+        ListElement* tmp = current->next;
         free(current);
         current = tmp;
     }
@@ -149,10 +164,11 @@ void DeleteList(pList lst)
 }
 
 
-void DumpList(pList lst)
+void listDump(List* lst)
 {
-    assert(lst);
-    pListElement current = lst->first;
+    assert(lst && "Passed NULL pointer");
+
+    ListElement* current = lst->first;
     printf("{\n");
     if (!current)
         printf("List is empty\n");

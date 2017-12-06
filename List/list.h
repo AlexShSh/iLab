@@ -1,33 +1,34 @@
 #pragma once
 
-#define DEBUG
 
+#define LIST_DUMP(lst) printf("List '" #lst "' [0x%p] from %s %s() (%d)\n", lst, __FILE__,__PRETTY_FUNCTION__, __LINE__ );\
+                    listDump(lst);
+
+
+typedef int value_t;
 
 typedef struct list_element
 {
-    int value;
+    value_t value;
     struct list_element* next;
     struct list_element* prev;
-} ListElement, *pListElement;
+} ListElement;
 
 typedef struct List
 {
-    pListElement first;
-    pListElement last;
-} List, *pList;
+    ListElement* first;
+    ListElement* last;
+} List;
 
 
-pList ListCreate();
-void PushBack(pList lst, int value);
-void PushFront(pList lst, int value);
-pListElement InsertBack(pListElement elem, int value);
-pListElement InsertFront(pListElement elem, int value);
-void PrintList(pList lst);
-pListElement FindValue(pList lst, int value);
-pListElement IndexToPointer(pList lst, int index);
-void DeleteElement(pListElement elem);
-void DeleteList(pList lst);
-void DumpList(pList lst);
-
-#define DUMP_LIST(lst) printf("List '" #lst "' [0x%p] from %s %s() (%d)\n", lst, __FILE__,__PRETTY_FUNCTION__, __LINE__ );\
-                    DumpList(lst);
+List* listCreate();
+void listPushBack(List* lst, value_t value);
+void listPushFront(List* lst, value_t value);
+ListElement* listInsertBack(ListElement* elem, value_t value);
+ListElement* listInsertFront(ListElement* elem, value_t value);
+void listPrint(List* lst);
+ListElement* listFindValue(List* lst, value_t value);
+ListElement* listIndexToPointer(List* lst, int index);
+void listDeleteElement(ListElement* elem);
+void listDelete(List* lst);
+void listDump(List* lst);

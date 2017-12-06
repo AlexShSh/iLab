@@ -6,40 +6,44 @@
 
 int main()
 {
-    pList lst = ListCreate();
+    List* lst = listCreate();
     int i = 0;
     for (i = 1; i < LIST_LEN; ++i)
     {
         if (i % 2)
-            PushBack(lst, i);
+            listPushBack(lst, i);
         else
-            PushFront(lst, i);
+            listPushFront(lst, i);
     }
 
-    PrintList(lst);
+    listPrint(lst);
 
     int search = 0;
     scanf("%d", &search);
-    pListElement res = FindValue(lst, search);
+
+    ListElement* res = listFindValue(lst, search);
     if (res)
         printf("Element %d adders is 0x[%p]\n", search, res);
     else
         printf("Element %d is not found\n", search);
+
     if (res)
     {
-        InsertBack(res, 716);
-        InsertFront(res, -716);
+        listInsertBack(res, 716);
+        listInsertFront(res, -716);
     }
-    PrintList(lst);
+    listPrint(lst);
+
     int index = 0;
     scanf("%d", &index);
-    res = IndexToPointer(lst, index);
+    res = listIndexToPointer(lst, index);
     if (res)
-        DeleteElement(res);
-    PrintList(lst);
-    DUMP_LIST(lst);
+        listDeleteElement(res);
 
-    DeleteList(lst);
+    listPrint(lst);
+    LIST_DUMP(lst);
+
+    listDelete(lst);
 
     return 0;
 }
