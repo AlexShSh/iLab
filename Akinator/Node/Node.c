@@ -6,7 +6,7 @@
 #include "Node.h"
 
 
-Node* nodeCreate(value_t value)
+Node* nodeCreate(value_type value)
 {
     Node* NewNode = (Node*) calloc(1, sizeof(Node));
     assert(NewNode && "Failed to create new node");
@@ -23,7 +23,7 @@ Node* nodeCreate(value_t value)
 }
 
 
-value_t nodeAddValue(value_t value)
+value_type nodeAddValue(value_type value)
 {
     assert(value && "Char pointer is NULL");
 
@@ -38,7 +38,7 @@ value_t nodeAddValue(value_t value)
 }
 
 
-void nodeAddLeft(Node* root, value_t value)
+void nodeAddLeft(Node* root, value_type value)
 {
     assert(root && "Root is NULL");
 
@@ -50,7 +50,7 @@ void nodeAddLeft(Node* root, value_t value)
 }
 
 
-void nodeAddRight(Node* root, value_t value)
+void nodeAddRight(Node* root, value_type value)
 {
     assert(root && "Root is NULL");
 
@@ -88,7 +88,7 @@ void nodeDot(Node* root)
     fprintf(fdot, "digraph G {\n"
             "node[shape=\"box\", color=\"DarkGreen\", fillcolor=\"green\", style=\"rounded,filled\", "
             "penwidth=2, label=\" \", fontsize=18, fontcolor=\"Maroon\"];\n");
-    nodeFprintDot(fdot, root, "Root");
+    nodeFprintDot(fdot, root, "");
     fprintf(fdot, "}\n");
 
     fclose(fdot);
@@ -102,14 +102,14 @@ void nodeFprintDot(FILE *fdot, Node *root, const char *str)
     fprintf(fdot, "El_%x [label=\"%s\"];\n",(unsigned int) root, root->value); //, xlabel="%s"  str
     if (root->left)
     {
-        fprintf(fdot, "El_%x -> El_%x [color=\"SaddleBrown\"];\n",(unsigned int) root,(unsigned int) root->left);
-        nodeFprintDot(fdot, root->left, "L");
+        fprintf(fdot, "El_%x -> El_%x [color=\"SaddleBrown\", label=\"yes\", fontsize=16, fontcolor=\"Maroon\"];\n",(unsigned int) root,(unsigned int) root->left);
+        nodeFprintDot(fdot, root->left, "yes");
     }
 
     if (root->right)
     {
-        fprintf(fdot, "El_%x -> El_%x [color=\"SaddleBrown\"];\n",(unsigned int) root,(unsigned int) root->right);
-        nodeFprintDot(fdot, root->right, "R");
+        fprintf(fdot, "El_%x -> El_%x [color=\"SaddleBrown\", label=\"no\", fontsize=16, fontcolor=\"Maroon\"];\n",(unsigned int) root,(unsigned int) root->right);
+        nodeFprintDot(fdot, root->right, "no");
     }
 }
 
@@ -129,4 +129,25 @@ void nodeFprint(FILE* fout, Node* node)
 
     fprintf(fout, "} ");
 
+}
+
+
+Node* nodeFind(Node* root, char* str)
+{
+    if (strcmp(root->value, str) == 0)
+        return root;
+
+    Node* res = NULL;
+
+    if (root->left)
+        res = nodeFind(root->left, str);
+    if (res)
+        return res;
+
+    if (root->right)
+        res = nodeFind(root->right, str);
+    if (res)
+        return res;
+
+    return NULL;
 }

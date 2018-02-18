@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Node.h"
+#include "../Node/Node.h"
 
 #define SKIP_SPASES while(*cur == ' ' || *cur == '\n' || *cur == '\t' || *cur == '\r')\
                         cur++;
 
-#define ANSW_BUFF_SIZE 32
+#define BUFF_SIZE 32
 
 
 

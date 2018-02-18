@@ -1,21 +1,22 @@
 #pragma once
 
-typedef char* value_t;
+typedef char* value_type;
 
 typedef struct Node
 {
     struct Node* left;
     struct Node* right;
     struct Node* parent;
-    value_t value;
+    value_type value;
 } Node;
 
 
-Node* nodeCreate(value_t value);
-value_t nodeAddValue(value_t value);
-void nodeAddLeft(Node* root, value_t value);
-void nodeAddRight(Node* root, value_t value);
+Node* nodeCreate(value_type value);
+value_type nodeAddValue(value_type value);
+void nodeAddLeft(Node* root, value_type value);
+void nodeAddRight(Node* root, value_type value);
 void nodeDelete(Node* root);
 void nodeDot(Node* root);
 void nodeFprintDot(FILE* fdot, Node *root, const char *str);
 void nodeFprint(FILE* fout, Node* node);
+Node* nodeFind(Node* root, char* str);

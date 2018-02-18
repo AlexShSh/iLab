@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "Akinator.h"
-#include "Node.h"
+#include "../Node/Node.h"
 
 
 char* CreateBuffer()
@@ -109,7 +109,7 @@ void Akinator(Node* tree)
     const char* NegativeAnswer = "no";
 
     Node* node = tree;
-    char* answ_buf = (char*) calloc(ANSW_BUFF_SIZE + 1, sizeof(char));
+    char* answ_buf = (char*) calloc(BUFF_SIZE + 1, sizeof(char));
 
     while (node->left)    // children exist
     {
@@ -173,7 +173,7 @@ void AskQuestion(Node* node)
 
 void GetAnswer(char* answ_buf)
 {
-    fgets(answ_buf, ANSW_BUFF_SIZE, stdin);
+    fgets(answ_buf, BUFF_SIZE, stdin);
     if (answ_buf[strlen(answ_buf) - 1] == '\n')
         answ_buf[strlen(answ_buf) - 1] = '\0';
 }
