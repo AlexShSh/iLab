@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/Akinator.dir/main.c.o CMakeFiles/Akinator.dir/Node/Node.c.o CMakeFiles/Akinator.dir/Akinator/Akinator.c.o CMakeFiles/Akinator.dir/Determination/Determination.c.o CMakeFiles/Akinator.dir/Stack/Stack.c.o  -o Akinator 
