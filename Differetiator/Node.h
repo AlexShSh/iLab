@@ -1,13 +1,9 @@
-//
-// Created by alex on 27.02.18.
-//
+#ifndef NODECLASS_NODE_H
+#define NODECLASS_NODE_H
 
 #include <cassert>
 #include <cstdlib>
 #include <cstdio>
-
-#ifndef NODECLASS_NODE_H
-#define NODECLASS_NODE_H
 
 
 enum FLAG
@@ -23,8 +19,12 @@ enum
     SUB,
     MUL,
     DEL,
+    SIN,
+    COS,
+    LOG,
 
-    X_VAR = 20
+    X_VAR = 20,
+    Y_VAR
 };
 
 
@@ -48,11 +48,12 @@ public:
     void attachLeft(Node* l);
     void attachRight(Node* r);
 
-    void Dot();
-    void fprintDot(FILE *fdot);
+    void Dot(const char* filename);
 
     ~Node();
+private:
+    void fprintDot(FILE *fdot);
+    const char* val2str();
 };
-
 
 #endif //NODECLASS_NODE_H

@@ -1,0 +1,15 @@
+digraph G {
+node[shape="box", color="DarkGreen", fillcolor="green", style="rounded,filled", penwidth=2, label=" ", fontsize=18, fontcolor="Maroon"]
+edge[color="SaddleBrown", fontsize=16, fontcolor="Maroon"];
+El_5a85e60 [label="sin"];
+El_5a85e60 -> El_5a85c80;
+El_5a85c80 [label="/"];
+El_5a85c80 -> El_5a85ce0;
+El_5a85ce0 [label="1"];
+El_5a85c80 -> El_5a85d40;
+El_5a85d40 [label="/"];
+El_5a85d40 -> El_5a85da0;
+El_5a85da0 [label="1"];
+El_5a85d40 -> El_5a85e00;
+El_5a85e00 [label="x"];
+}

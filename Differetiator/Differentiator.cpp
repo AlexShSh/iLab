@@ -1,15 +1,11 @@
-//
-// Created by alex on 04.03.18.
-//
-
 #include <cstdio>
 #include <cassert>
 #include "Differentiator.h"
 
 
-Node* Differentiator::Diff(Node* tree)
+Node* Differentiator::Diff(const Node* tree)
 {
-    Node* diffTree = NULL;
+    Node* diffTree = nullptr;
     switch (tree->flag)
     {
         case FUNC:
@@ -26,11 +22,11 @@ Node* Differentiator::Diff(Node* tree)
     return diffTree;
 }
 
-Node* Differentiator::DiffFunc(Node *tree)
+Node* Differentiator::DiffFunc(const Node *tree)
 {
     assert(tree->flag == FUNC);
 
-    Node* diffTree = NULL;
+    Node* diffTree = nullptr;
     switch (tree->value)
     {
         case SUM:
@@ -45,16 +41,27 @@ Node* Differentiator::DiffFunc(Node *tree)
         case DEL:
             diffTree = DiffDel(tree);
             break;
+        case SIN:
+            diffTree = DiffSin(tree);
+            break;
+        case COS:
+            diffTree = DiffCos(tree);
+            break;
+        case LOG:
+            diffTree = DiffLog(tree);
+            break;
 
         default:
-            diffTree = NULL;
+            diffTree = nullptr;
     }
 
     return diffTree;
 }
 
-Node* Differentiator::DiffSum(Node *tree)
+Node* Differentiator::DiffSum(const Node *tree)
 {
+    assert(tree->left && tree->right);
+
     Node* diffTree = new Node(FUNC, SUM);
 
     diffTree->attachLeft(Diff(tree->left));
@@ -63,8 +70,10 @@ Node* Differentiator::DiffSum(Node *tree)
     return diffTree;
 }
 
-Node* Differentiator::DiffSub(Node *tree)
+Node* Differentiator::DiffSub(const Node *tree)
 {
+    assert(tree->left && tree->right);
+
     Node* diffTree = new Node(FUNC, SUB);
 
     diffTree->attachLeft(Diff(tree->left));
@@ -73,8 +82,10 @@ Node* Differentiator::DiffSub(Node *tree)
     return diffTree;
 }
 
-Node* Differentiator::DiffMul(Node *tree)
+Node* Differentiator::DiffMul(const Node *tree)
 {
+    assert(tree->left && tree->right);
+
     Node* diffTree = new Node(FUNC, SUM);
 
     diffTree->addLeft(FUNC, MUL);
@@ -88,8 +99,10 @@ Node* Differentiator::DiffMul(Node *tree)
     return diffTree;
 }
 
-Node* Differentiator::DiffDel(Node *tree)
+Node* Differentiator::DiffDel(const Node *tree)
 {
+    assert(tree->left && tree->right);
+
     Node* diffTree = new Node(FUNC, DEL);
 
     diffTree->addLeft(FUNC, SUB);
@@ -107,11 +120,66 @@ Node* Differentiator::DiffDel(Node *tree)
     return diffTree;
 }
 
-Node* Differentiator::DiffVar(Node *tree)
+Node* Differentiator::DiffSin(const Node *tree)
+{
+    assert(tree->right && !tree->left);
+
+    Node* diffTree = new Node(FUNC, MUL);
+
+    diffTree->addLeft(FUNC, COS);
+        diffTree->left->attachRight(Copy(tree->right));
+
+    diffTree->attachRight(Diff(tree->right));
+
+    return diffTree;
+}
+
+Node* Differentiator::DiffCos(const Node *tree)
+{
+    assert(tree->right && !tree->left);
+
+    Node* diffTree = new Node(FUNC, SUB);
+
+    diffTree->addLeft(NUM, 0);
+    diffTree->addRight(FUNC, MUL);
+        diffTree->right->addLeft(FUNC, SIN);
+            diffTree->right->left->attachRight(Copy(tree->right));
+        diffTree->right->attachRight(Diff(tree->right));
+
+    return diffTree;
+}
+
+Node* Differentiator::DiffLog(const Node *tree)
+{
+    assert(tree->right && !tree->left);
+
+    Node* diffTree = new Node(FUNC, DEL);
+
+    diffTree->attachLeft(Diff(tree->right));
+    diffTree->attachRight(Copy(tree->left));
+
+    return diffTree;
+}
+
+Node* Differentiator::DiffVar(const Node *tree)
 {
     assert(tree->flag == VAR);
 
-    Node* diffTree = new Node(NUM, 1);
+    Node* diffTree = nullptr;
+
+    switch (tree->value)
+    {
+
+        case X_VAR:
+            diffTree = new Node(NUM, 1);
+            break;
+        case Y_VAR:
+            diffTree = new Node(NUM, 0);
+            break;
+
+        default:
+            diffTree = nullptr;
+    }
 
     return diffTree;
 }
@@ -123,7 +191,7 @@ Node* Differentiator::DiffNum()
     return diffTree;
 }
 
-Node* Differentiator::Copy(Node *tree)
+Node* Differentiator::Copy(const Node *tree)
 {
     Node* newNode = new Node(tree->flag, tree->value);
 

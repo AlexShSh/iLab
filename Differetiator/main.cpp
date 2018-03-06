@@ -1,22 +1,29 @@
-#include <cstdio>
+#include <iostream>
 #include "Node.h"
 #include "Differentiator.h"
 
 
 int main()
 {
-    Node* tree = new Node(FUNC, DEL);
+    auto tree = new Node(FUNC, DEL);
 
     tree->addLeft(NUM, 1);
     tree->addRight(FUNC, DEL);
         tree->right->addLeft(NUM, 1);
         tree->right->addRight(VAR, X_VAR);
 
-    auto Differ = new Differentiator;
+    auto ntree = new Node(FUNC, SIN);
+    ntree->attachRight(tree);
 
-    Node* diffTree = Differ->Diff(tree);
+    auto Differ = Differentiator();
 
-    diffTree->Dot();
+    Node* diffTree = Differ.Diff(ntree);
+
+    ntree->Dot("tree");
+    diffTree->Dot("diffTree");
+
+    delete ntree;
+    delete diffTree;
 
     return 0;
 }

@@ -11,19 +11,22 @@
 class Differentiator
 {
 public:
-    Node* Diff(Node* tree);
+    Node* Diff(const Node* tree);
 
 private:
-    Node* DiffFunc(Node* tree);
-    Node* DiffVar(Node* tree);
+    Node* DiffFunc(const Node* tree);
+    Node* DiffVar(const Node* tree);
     Node* DiffNum();
 
-    Node* DiffSum(Node* tree);
-    Node* DiffSub(Node* tree);
-    Node* DiffMul(Node* tree);
-    Node* DiffDel(Node* tree);
+    Node* DiffSum(const Node* tree);
+    Node* DiffSub(const Node* tree);
+    Node* DiffMul(const Node* tree);
+    Node* DiffDel(const Node* tree);
+    Node* DiffSin(const Node* tree);
+    Node* DiffCos(const Node* tree);
+    Node* DiffLog(const Node* tree);
 
-    Node* Copy(Node* tree);
+    Node* Copy(const Node* tree);
 };
 
 
