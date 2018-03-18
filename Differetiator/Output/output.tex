@@ -1,0 +1,49 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage[left = 20mm, bottom=15mm, top=15mm, right=10mm]{geometry}
+
+\begin{document}
+Требуется продифференцировать данное выражение: 
+
+$ \cos (\frac{\sin (x) } {\ln (x)} ) \cdot (\tan (x)  - e^{5x}) $
+
+На 65 странице учебника Бесова доказано, что $(f \cdot g)' = f'g + fg' $. Следовательно: \\ 
+ $(\cos (\frac{\sin (x) } {\ln (x)} ) \cdot (\tan (x)  - e^{5x}) )' =  (\cos (\frac{\sin (x) } {\ln (x)} ) )' \cdot ((\tan (x)  - e^{5x}) ) + (\cos (\frac{\sin (x) } {\ln (x)} ) ) \cdot ((\tan (x)  - e^{5x}) )'$ \\ 
+ Тер-Крикоров настаивает: $(\cos(f))' = -\sin(f) \cdot f' $. Если это так, тогда: \\ 
+ $(\cos (\frac{\sin (x) } {\ln (x)} ) )' =  -\sin(\frac{\sin (x) } {\ln (x)} ) \cdot (\frac{\sin (x) } {\ln (x)} )' $ \\ 
+Г.Е. Иванов утверждает, что $(\frac{f}{g})' = \frac{f'g - fg'}{g^2} $. Поверив на слово, получим: \\ 
+ $(\frac{\sin (x) } {\ln (x)} )' =  \frac{(\sin (x) )' \cdot (\ln (x)) - (\sin (x) ) \cdot (\ln (x))'}{(\ln (x))^2}$ \\ 
+ В учебнике Петровича написано: $(\sin(f))' = \cos(f) \cdot f' $. Попробуем это применить: \\ 
+ $(\sin (x) )' =  \cos(x) \cdot (x)' $ \\ 
+Применим великое математическое утверждение: $x' = 1$.  \\ 
+Все математики мира согласны, что: $(\ln(f))' = \frac{f'}{f} $. Согласимся и мы: \\ 
+ $(\ln (x))' =  \frac{x'}{x} $ \\ 
+Применим великое математическое утверждение: $x' = 1$.  \\ 
+Десятиклассник знает, что $(f - g)' = f' - g' $. Используя это, получаем: \\ 
+ $((\tan (x)  - e^{5x}) )' = (\tan (x) )' - (e^{5x})'$ \\ 
+Проснувшись на лекции, я узнал, что: $(\tan(f))' = \frac{f'}{\cos^2(f)} $. Попробуем использовать: \\ 
+ $(\tan (x) )' =  \frac{(x)'}{\cos^2(x)} $ \\ 
+Применим великое математическое утверждение: $x' = 1$.  \\ 
+Даже ежу известно: $((e^{f})' = e^{f} \cdot f'$. Используем знания ежа: \\ 
+ $(e^{5x})' =  e^{5x} \cdot (5x)' $ \\ 
+На 65 странице учебника Бесова доказано, что $(f \cdot g)' = f'g + fg' $. Следовательно: \\ 
+ $(5x)' =  (5)' \cdot (x) + (5) \cdot (x)'$ \\ 
+ Из курса математического анализа известно, что $C' = 0$. Тогда: \\ 
+ $5' = 0$ \\ 
+Применим великое математическое утверждение: $x' = 1$.  \\ 
+Итак, искомая производная равна: 
+
+$ -\sin (\frac{\sin (x) } {\ln (x)} ) \cdot \frac{(\cos (x) \cdot 1\cdot \ln (x) - \frac{1} {x} \cdot \sin (x) ) } {\ln (x)\cdot \ln (x)} \cdot (\tan (x)  - e^{5x})  + \cos (\frac{\sin (x) } {\ln (x)} ) \cdot (\frac{1} {\cos (x) \cdot \cos (x) }  - e^{5x}\cdot (0x + 5\cdot 1) ) $
+
+Попытаемся упростить выражение: 
+
+Воспользуемся правилами умножения: $5 \cdot 1 = 5$ \\ 
+Даже гуманитарий знает, что: $ \cos (x)  \cdot 1 = \cos (x) $ \\ 
+ Вы будете в шоке, но $ 0 \cdot x = 0$ \\ 
+ Математики думают, что $0 + 5 = 5$ \\ 
+ Итоговый результат: \\ 
+$ -\sin (\frac{\sin (x) } {\ln (x)} ) \cdot \frac{(\cos (x) \cdot \ln (x) - \frac{1} {x} \cdot \sin (x) ) } {\ln (x)\cdot \ln (x)} \cdot (\tan (x)  - e^{5x})  + \cos (\frac{\sin (x) } {\ln (x)} ) \cdot (\frac{1} {\cos (x) \cdot \cos (x) }  - e^{5x}\cdot 5) $
+
+\end{document}
