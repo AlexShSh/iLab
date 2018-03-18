@@ -8,7 +8,7 @@
 
 enum FLAG
 {
-    NUM = 0,
+    NUM = 1,
     VAR,
     FUNC
 };
@@ -22,8 +22,12 @@ enum
     SIN,
     COS,
     LOG,
+    TAN,
+    COT,
+    SQRT,
+    EXP,
 
-    X_VAR = 20,
+    X_VAR = 30,
     Y_VAR
 };
 
@@ -47,6 +51,9 @@ public:
 
     void attachLeft(Node* l);
     void attachRight(Node* r);
+
+    bool IsLeftChild();
+    bool IsRightChild();
 
     void Dot(const char* filename);
 

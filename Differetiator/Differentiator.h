@@ -1,22 +1,23 @@
-//
-// Created by alex on 04.03.18.
-//
-
 #ifndef NODECLASS_DIFFERENTIATOR_H
 #define NODECLASS_DIFFERENTIATOR_H
 
 #include <cstdio>
 #include "Node.h"
+#include "TexOutput.h"
 
 class Differentiator
 {
+
+private:
+    TexOutput TexOut;
 public:
+    Differentiator(FILE* f);
     Node* Diff(const Node* tree);
 
 private:
     Node* DiffFunc(const Node* tree);
     Node* DiffVar(const Node* tree);
-    Node* DiffNum();
+    Node* DiffNum(const Node* tree);
 
     Node* DiffSum(const Node* tree);
     Node* DiffSub(const Node* tree);
@@ -25,6 +26,10 @@ private:
     Node* DiffSin(const Node* tree);
     Node* DiffCos(const Node* tree);
     Node* DiffLog(const Node* tree);
+    Node* DiffTan(const Node* tree);
+    Node* DiffCot(const Node *tree);
+    Node* DiffSqrt(const Node* tree);
+    Node* DiffExp(const Node* tree);
 
     Node* Copy(const Node* tree);
 };

@@ -1,6 +1,4 @@
 #include <iostream>
-#include <cstdlib>
-#include <cstdio>
 #include "Node.h"
 
 
@@ -13,14 +11,12 @@ Node::Node()
     value = 0;
 }
 
-Node::Node(FLAG fl, value_t val)
-{
-    left = nullptr;
-    right = nullptr;
-    parent = nullptr;
-    flag = fl;
-    value = val;
-}
+Node::Node(FLAG fl, value_t val):
+    left(nullptr),
+    right(nullptr),
+    parent(nullptr),
+    flag(fl),
+    value(val) {}
 
 void Node::addLeft(FLAG fl, value_t val)
 {
@@ -41,7 +37,7 @@ void Node::addRight(FLAG fl, value_t val)
 }
 
 void Node::attachLeft(Node* l)
-{
+{void ConvConst(Node* node);
     if (left)
         delete left;
 
@@ -60,6 +56,7 @@ void Node::attachRight(Node* r)
 
 void Node::Dot(const char* filename)
 {
+    assert(this);
     FILE* fdot = fopen(filename, "w");
     assert(fdot && "Failed to open file");
 
@@ -76,6 +73,7 @@ void Node::Dot(const char* filename)
 void Node::fprintDot(FILE *fdot)
 {
     assert(fdot && "File is nullptr");
+    assert(this);
 
     if (flag == NUM)
         fprintf(fdot, "El_%x [label=\"%d\"];\n", this, value);
@@ -113,6 +111,14 @@ const char* Node::val2str()
             return "cos";
         case LOG:
             return "ln";
+        case TAN:
+            return "tg";
+        case COT:
+            return "ctg";
+        case SQRT:
+            return "sqrt";
+        case EXP:
+            return "exp";
 
         case X_VAR:
             return "x";
@@ -125,8 +131,25 @@ const char* Node::val2str()
 
 }
 
+bool Node::IsLeftChild()
+{
+    if (parent)
+        return parent->left == this;
+
+    return false;
+}
+
+bool Node::IsRightChild()
+{
+    if (parent)
+        return parent->right == this;
+
+    return false;
+}
+
 Node::~Node()
 {
+
     if (left)
     {
         delete left;

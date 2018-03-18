@@ -3,6 +3,9 @@
 #include "Differentiator.h"
 
 
+Differentiator::Differentiator(FILE *f):
+     TexOut(TexOutput(f)) {}
+
 Node* Differentiator::Diff(const Node* tree)
 {
     Node* diffTree = nullptr;
@@ -15,7 +18,7 @@ Node* Differentiator::Diff(const Node* tree)
             diffTree = DiffVar(tree);
             break;
         case NUM:
-            diffTree = DiffNum();
+            diffTree = DiffNum(tree);
             break;
     }
 
@@ -50,6 +53,18 @@ Node* Differentiator::DiffFunc(const Node *tree)
         case LOG:
             diffTree = DiffLog(tree);
             break;
+        case TAN:
+            diffTree = DiffTan(tree);
+            break;
+        case COT:
+            diffTree = DiffCot(tree);
+            break;
+        case SQRT:
+            diffTree = DiffSqrt(tree);
+            break;
+        case EXP:
+            diffTree = DiffExp(tree);
+            break;
 
         default:
             diffTree = nullptr;
@@ -61,6 +76,8 @@ Node* Differentiator::DiffFunc(const Node *tree)
 Node* Differentiator::DiffSum(const Node *tree)
 {
     assert(tree->left && tree->right);
+
+    TexOut.difSum(tree);
 
     Node* diffTree = new Node(FUNC, SUM);
 
@@ -74,6 +91,8 @@ Node* Differentiator::DiffSub(const Node *tree)
 {
     assert(tree->left && tree->right);
 
+    TexOut.difSub(tree);
+
     Node* diffTree = new Node(FUNC, SUB);
 
     diffTree->attachLeft(Diff(tree->left));
@@ -85,6 +104,8 @@ Node* Differentiator::DiffSub(const Node *tree)
 Node* Differentiator::DiffMul(const Node *tree)
 {
     assert(tree->left && tree->right);
+
+    TexOut.difMul(tree);
 
     Node* diffTree = new Node(FUNC, SUM);
 
@@ -103,19 +124,21 @@ Node* Differentiator::DiffDel(const Node *tree)
 {
     assert(tree->left && tree->right);
 
+    TexOut.difDel(tree);
+
     Node* diffTree = new Node(FUNC, DEL);
 
     diffTree->addLeft(FUNC, SUB);
-        diffTree->left->addLeft(FUNC, MUL);
-            diffTree->left->left->attachLeft(Diff(tree->left));
-            diffTree->left->left->attachRight(Copy(tree->right));
-        diffTree->left->addRight(FUNC, MUL);
-            diffTree->left->right->attachLeft(Diff(tree->right));
-            diffTree->left->right->attachRight(Copy(tree->left));
+    diffTree->left->addLeft(FUNC, MUL);
+    diffTree->left->left->attachLeft(Diff(tree->left));
+    diffTree->left->left->attachRight(Copy(tree->right));
+    diffTree->left->addRight(FUNC, MUL);
+    diffTree->left->right->attachLeft(Diff(tree->right));
+    diffTree->left->right->attachRight(Copy(tree->left));
 
     diffTree->addRight(FUNC, MUL);
-        diffTree->right->attachLeft(Copy(tree->right));
-        diffTree->right->attachRight(Copy(tree->right));
+    diffTree->right->attachLeft(Copy(tree->right));
+    diffTree->right->attachRight(Copy(tree->right));
 
     return diffTree;
 }
@@ -124,10 +147,12 @@ Node* Differentiator::DiffSin(const Node *tree)
 {
     assert(tree->right && !tree->left);
 
+    TexOut.difSin(tree);
+
     Node* diffTree = new Node(FUNC, MUL);
 
     diffTree->addLeft(FUNC, COS);
-        diffTree->left->attachRight(Copy(tree->right));
+    diffTree->left->attachRight(Copy(tree->right));
 
     diffTree->attachRight(Diff(tree->right));
 
@@ -138,13 +163,15 @@ Node* Differentiator::DiffCos(const Node *tree)
 {
     assert(tree->right && !tree->left);
 
-    Node* diffTree = new Node(FUNC, SUB);
+    TexOut.difCos(tree);
 
-    diffTree->addLeft(NUM, 0);
+    Node* diffTree = new Node(FUNC, MUL);
+
+    diffTree->addLeft(NUM, -1);
     diffTree->addRight(FUNC, MUL);
-        diffTree->right->addLeft(FUNC, SIN);
-            diffTree->right->left->attachRight(Copy(tree->right));
-        diffTree->right->attachRight(Diff(tree->right));
+    diffTree->right->addLeft(FUNC, SIN);
+    diffTree->right->left->attachRight(Copy(tree->right));
+    diffTree->right->attachRight(Diff(tree->right));
 
     return diffTree;
 }
@@ -153,14 +180,89 @@ Node* Differentiator::DiffLog(const Node *tree)
 {
     assert(tree->right && !tree->left);
 
+    TexOut.difLog(tree);
+
     Node* diffTree = new Node(FUNC, DEL);
 
     diffTree->attachLeft(Diff(tree->right));
-    diffTree->attachRight(Copy(tree->left));
+    diffTree->attachRight(Copy(tree->right));
 
     return diffTree;
 }
 
+
+Node* Differentiator::DiffTan(const Node *tree)
+{
+    assert(tree->right && !tree->left);
+
+    TexOut.difTan(tree);
+
+    Node* diffTree = new Node(FUNC, DEL);
+
+    diffTree->attachLeft(Diff(tree->right));
+    diffTree->addRight(FUNC, MUL);
+        diffTree->right->addLeft(FUNC, COS);
+            diffTree->right->left->attachRight(Copy(tree->right));
+        diffTree->right->addRight(FUNC, COS);
+            diffTree->right->right->attachRight(Copy(tree->right));
+
+    return diffTree;
+}
+
+
+Node* Differentiator::DiffCot(const Node *tree)
+{
+    assert(tree->right && !tree->left);
+
+    TexOut.difCot(tree);
+
+    Node* diffTree = new Node(FUNC, DEL);
+
+    diffTree->addLeft(FUNC, MUL);
+        diffTree->left->addLeft(NUM, -1);
+        diffTree->left->attachRight(Diff(tree->right));
+    diffTree->addRight(FUNC, MUL);
+        diffTree->right->addLeft(FUNC, SIN);
+            diffTree->right->left->attachRight(Copy(tree->right));
+        diffTree->right->addRight(FUNC, SIN);
+            diffTree->right->right->attachRight(Copy(tree->right));
+
+    return diffTree;
+}
+
+
+Node* Differentiator::DiffSqrt(const Node *tree)
+{
+    assert(tree->right && !tree->left);
+
+    TexOut.difSqrt(tree);
+
+    Node* diffTree = new Node(FUNC, DEL);
+
+    diffTree->attachLeft(Diff(tree->right));
+    diffTree->addRight(FUNC, MUL);
+        diffTree->right->addLeft(NUM, 2);
+        diffTree->right->attachRight(Copy(tree));
+
+    return diffTree;
+}
+
+Node* Differentiator::DiffExp(const Node *tree)
+{
+    assert(tree->right && !tree->left);
+
+    TexOut.difExp(tree);
+
+    Node* diffTree = new Node(FUNC, MUL);
+
+    diffTree->attachLeft(Copy(tree));
+    diffTree->attachRight(Diff(tree->right));
+
+    return diffTree;
+}
+
+
+///////
 Node* Differentiator::DiffVar(const Node *tree)
 {
     assert(tree->flag == VAR);
@@ -172,9 +274,11 @@ Node* Differentiator::DiffVar(const Node *tree)
 
         case X_VAR:
             diffTree = new Node(NUM, 1);
+            TexOut.difVarX(tree);
             break;
         case Y_VAR:
             diffTree = new Node(NUM, 0);
+            TexOut.difVarY(tree);
             break;
 
         default:
@@ -184,9 +288,10 @@ Node* Differentiator::DiffVar(const Node *tree)
     return diffTree;
 }
 
-Node* Differentiator::DiffNum()
+Node* Differentiator::DiffNum(const Node* tree)
 {
     Node* diffTree = new Node(NUM, 0);
+    TexOut.difNum(tree);
 
     return diffTree;
 }
