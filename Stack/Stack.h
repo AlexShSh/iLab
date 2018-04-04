@@ -1,24 +1,47 @@
-#pragma once
+#ifndef STACKCALCULATE_STACK_H
+#define STACKCALCULATE_STACK_H
 
-#define STACK_SIZE 16
+#include <glob.h>
 
-#define DUMP(stk) printf("Stack \"" #stk "\" [0x%p] from %s %s() (%d)\n", stk, __FILE__, __PRETTY_FUNCTION__, __LINE__);\
-                    stack_dump(stk);
+#define STACK_MAX_SIZE 32
 
+#define STACK_ASSERT(stk) stk->_assert(#stk, __PRETTY_FUNCTION__);
 
-typedef struct Stack
+#define STACK_DUMP(stk) stk->_dump(#stk, __FILE__, __PRETTY_FUNCTION__, __LINE__);
+
+typedef int value_t;
+
+class Stack
 {
-    int* data;
-    unsigned int count;
-    unsigned int maxCount;
-} Stack;
+private:
+    value_t* data;
+    size_t count;
+    size_t maxCount;
+
+public:
+    Stack();
+    ~Stack();
+    void Push(value_t val);
+    value_t Pop();
+    void Add();
+    void Sub();
+    void Mul();
+    void Div();
+    void Sqr();
+    void Pow();
+    void Sqrt();
+
+    void _dump(const char* stkName, const char* fileName, const char* funcName, size_t line);
+    void _assert(const char* stackName, const char* funcName);
+
+private:
+    void createData();
+    void resizeData();
+    int IsNotOk();
+
+};
 
 
-Stack* stack_create();
-Stack* createBuffer(Stack* stk);
-Stack* resizeBuffer(Stack* stk);
-void stack_push(Stack* stk, int value);
-int stack_pop(Stack* stk);
-int stack_ok(Stack* stk);
-void stack_delete(Stack* stk);
-void stack_dump(Stack* stk);
+void stack_dump(Stack* stk, const char* stkName, const char* fileName, const char* funcName, size_t line);
+
+#endif //STACKCALCULATE_STACK_H
