@@ -38,6 +38,8 @@ public:
     void optConstSum(const Node* node);
     void optConstSub(const Node* node);
     void optConstMul(const Node* node);
+    void optConstDel(const Node* node);
+
 
     void opt0pl(const Node* node);
     void optPl0(const Node* node);

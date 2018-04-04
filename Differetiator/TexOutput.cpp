@@ -303,6 +303,11 @@ void TexOutput::optConstMul(const Node* node)
     fprintf(fout, "Воспользуемся правилами умножения: $%d \\cdot %d = %d$ \\\\ \n", node->left->value, node->right->value, node->left->value * node->right->value);
 }
 
+void TexOutput::optConstDel(const Node* node)
+{
+    fprintf(fout, "Воспользуемся правилами деления: $\\frac{%d}{%d} = %d$ \\\\ \n", node->left->value, node->right->value, node->left->value / node->right->value);
+}
+
 void TexOutput::opt0pl(const Node* node)
 {
     fprintf(fout, "Математики думают, что $0 + ");
@@ -323,7 +328,7 @@ void TexOutput::optPl0(const Node* node)
 
 void TexOutput::opt1ml(const Node* node)
 {
-    fprintf(fout, "Ходят слухи, что $ 1 \\cdot");
+    fprintf(fout, "Ходят слухи, что $ 1 \\cdot ");
     printNode(node->right);
     fprintf(fout, " = ");
     printNode(node->right);

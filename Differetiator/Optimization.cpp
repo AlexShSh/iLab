@@ -41,6 +41,17 @@ void Optimization::ConvConst(Node* node)
                 TexOut.optConstMul(node);
                 res = node->left->value * node->right->value;
                 break;
+            case DEL:
+            {
+                int a = node->left->value;
+                int b = node->right->value;
+                if (a % b == 0)
+                {
+                    TexOut.optConstDel(node);
+                    res = a / b;
+                }
+                break;
+            }
             default:
                 break;
         }
