@@ -11,7 +11,8 @@ Stack::Stack():
 
 Stack::~Stack()
 {
-    delete data;
+    delete[] data;
+    data = nullptr;
 }
 
 void Stack::Push(value_t val)
@@ -53,7 +54,7 @@ void Stack::Sub()
 {
     int a = Pop();
     int b = Pop();
-    Push(a - b);
+    Push(b - a);
 }
 
 void Stack::Mul()
@@ -67,18 +68,19 @@ void Stack::Div()
 {
     int a = Pop();
     int b = Pop();
-    Push(a / b);
+    Push(b / a);
 }
 
 void Stack::Pow()
 {
     int n = Pop();
     int a = Pop();
+    int res = a;
     for (int i = 1; i < n; i++)
     {
-        a *= a;
+        res *= a;
     }
-    Push(a);
+    Push(res);
 }
 
 void Stack::Sqr()
@@ -113,46 +115,46 @@ void Stack::resizeData()
     data = newData;
 }
 
-int Stack::IsNotOk()
+ERROR_CODE Stack::IsNotOk()
 {
     if (data && maxCount <= 0)
-        return 1;
+        return MCOUNT_L_N;
     if (!data && maxCount > 0)
-        return 2;
+        return MCOUNT_G_N;
     if (!data && count > 0)
-        return 3;
+        return COUNT_G_N;
     if (data && count < 0)
-        return 4;
+        return COUNT_L_N;
     if (data && count > maxCount)
-        return 5;
+        return COUNT_G_MCOUNT;
 
-    return 0;
+    return NO_ERROR;
 }
 
 
 void Stack::_assert(const char* stackName, const char* funcName)
 {
-    int code = IsNotOk();
-    if (code == 0)
+    ERROR_CODE code = IsNotOk();
+    if (code == NO_ERROR)
         return;
 
     printf("Stack %s [%p] error from %s:\n", stackName, this, funcName);
     switch (code)
     {
-        case 1:
+        case MCOUNT_L_N:
             printf("maxCount <= 0 but data isn't nullptr\n");
             break;
-        case 2:
+        case MCOUNT_G_N:
             printf("maxCount > 0 but data is nullptr\n");
             break;
-        case 3:
+        case COUNT_G_N:
             printf("count > 0 but data is nullptr\n");
             break;
-        case 4:
+        case COUNT_L_N:
             printf("count < 0\n"
                            "count = %d", count);
             break;
-        case 5:
+        case COUNT_G_MCOUNT:
             printf("count > maxCount\n"
                            "count = %d, maxCount = %d\n", count, maxCount);
             break;

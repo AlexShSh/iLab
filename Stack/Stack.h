@@ -11,6 +11,17 @@
 
 typedef int value_t;
 
+
+enum ERROR_CODE
+{
+    NO_ERROR = 0,
+    MCOUNT_L_N = 1,
+    MCOUNT_G_N,
+    COUNT_G_N,
+    COUNT_L_N,
+    COUNT_G_MCOUNT
+};
+
 class Stack
 {
 private:
@@ -37,7 +48,7 @@ public:
 private:
     void createData();
     void resizeData();
-    int IsNotOk();
+    ERROR_CODE IsNotOk();
 
 };
 
